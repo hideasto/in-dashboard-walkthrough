@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Route 1 Trainer Academy — Gym Review (Demo)</title>
+<style>
+  :root {
+    --header: #2f1b52;
+    --accent: #ff8a3d;
+    --teal: #17a9a3;
+    --border: #d8d3e0;
+    --text: #23202b;
+    --muted: #6c6577;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    background: #f3f1f6;
+    color: var(--text);
+  }
+  .disclaimer {
+    background: #1c1425;
+    color: #d9c9f0;
+    font-size: 16px;
+    text-align: center;
+    padding: 6px 10px;
+  }
+  .wrap { max-width: 1200px; margin: 0 auto; position: relative; }
+  .topbar {
+    background: var(--header);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+  }
+  .topbar .home {
+    width: 34px; height: 34px; border-radius: 8px;
+    background: rgba(255,255,255,.12);
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 20px;
+  }
+  .topbar h1 { color: #fff; font-size: 22px; font-weight: 600; margin: 0; }
+  .brand-row {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 20px 10px;
+    flex-wrap: wrap;
+  }
+  .logo-badge {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: #f0be3c;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+  }
+  .brand-text { line-height: 1.2; }
+  .brand-text .name { font-weight: 700; font-size: 18px; }
+  .brand-text .sub { font-size: 15px; color: var(--muted); }
+  .tabs { display: flex; gap: 10px; flex-wrap: wrap; margin-left: 8px; }
+  .tab {
+    border: 1.5px solid var(--border);
+    background: #fff;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 17px;
+    color: var(--text);
+  }
+  .tab.active { background: var(--header); color: #fff; border-color: var(--header); }
+  .start-btn {
+    margin-left: auto;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 11px 18px;
+    font-size: 17px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 3px 8px rgba(255,138,61,.35);
+  }
+  .start-btn:hover { filter: brightness(1.05); }
+  .faq-btn {
+    background: #fff;
+    color: var(--teal);
+    border: 2px solid var(--teal);
+    border-radius: 8px;
+    padding: 9px 16px;
+    font-size: 17px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .faq-btn:hover { background: #eefaf9; }
+  .action-row {
+    display: flex; justify-content: flex-end; gap: 10px;
+    padding: 8px 20px 0;
+  }
+  .desc {
+    padding: 4px 20px 16px;
+    font-size: 17px;
+    color: var(--muted);
+  }
+  .panel { padding: 0 20px 30px; }
+  .filter-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  @media (max-width: 700px) { .filter-grid { grid-template-columns: repeat(2, 1fr); } }
+  .field label {
+    display: block; font-size: 15px; font-weight: 700; margin-bottom: 4px; color: var(--text);
+  }
+  .field select, .field .fake-input {
+    width: 100%;
+    padding: 9px 10px;
+    border: 1.5px solid var(--border);
+    border-radius: 6px;
+    background: #fff;
+    font-size: 17px;
+    color: var(--text);
+  }
+  .toggle-pair { display: flex; border: 1.5px solid var(--border); border-radius: 6px; overflow: hidden; }
+  .toggle-pair button {
+    flex: 1; border: none; background: #fff; padding: 9px 10px; font-size: 17px; cursor: pointer;
+  }
+  .toggle-pair button.selected { background: #e7e1f2; font-weight: 700; }
+  .pink-row .field select { background: #fbe9ea; }
+  .section-band {
+    background: var(--header);
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+    padding: 10px 14px;
+    border-radius: 8px 8px 0 0;
+    margin-top: 18px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .section-note {
+    background: #ece7f3; font-size: 15px; color: var(--muted);
+    padding: 8px 14px; font-style: italic;
+  }
+  .comparison-band { background: #5a5460; }
+  .comparison-note { background: #eeecef; }
+  table { width: 100%; border-collapse: collapse; font-size: 16.5px; background: #fff; }
+  th, td { padding: 7px 10px; text-align: right; border-bottom: 1px solid #eee; }
+  th:first-child, td:first-child { text-align: left; }
+  thead th { color: var(--muted); font-weight: 600; border-bottom: 2px solid #ddd; }
+  tbody tr:nth-child(even) { background: #faf9fb; }
+  tfoot td { font-weight: 700; border-top: 2px solid #ccc; }
+
+  .overlay-box {
+    position: absolute;
+    width: 420px;
+    background: var(--teal);
+    color: #fff;
+    padding: 16px 20px;
+    border-radius: 10px;
+    box-shadow: 0 12px 30px rgba(0,0,0,.25);
+    z-index: 50;
+    font-size: 17.5px;
+    line-height: 1.5;
+  }
+  .overlay-box.fold::before {
+    content: "";
+    position: absolute;
+    top: 0; left: -18px;
+    border-style: solid;
+    border-width: 0 18px 18px 0;
+    border-color: transparent var(--accent) transparent transparent;
+  }
+  .overlay-box.tail::before {
+    content: "";
+    position: absolute;
+    left: -16px; top: var(--tail-top, 50%);
+    transform: translateY(-50%);
+    border-style: solid;
+    border-width: 11px 16px 11px 0;
+    border-color: transparent var(--accent) transparent transparent;
+  }
+  .overlay-box.tail-right::before {
+    content: "";
+    position: absolute;
+    right: -16px; left: auto; top: var(--tail-top, 50%);
+    transform: translateY(-50%);
+    border-style: solid;
+    border-width: 11px 0 11px 16px;
+    border-color: transparent transparent transparent var(--accent);
+  }
+  .overlay-box .close {
+    position: absolute; top: 10px; right: 12px;
+    cursor: pointer; font-weight: 700; opacity: .85;
+  }
+  .overlay-box h3 { margin: 4px 0 2px; font-size: 16.5px; letter-spacing: .3px; }
+  .overlay-box h4 { margin: 0 0 8px; font-size: 17px; font-weight: 700; }
+  .overlay-nav {
+    display: flex; justify-content: flex-end; gap: 16px; margin-top: 10px; font-weight: 700; font-size: 17px;
+  }
+  .overlay-nav span { cursor: pointer; }
+  .welcome-box {
+    position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    background: var(--teal); color: #fff; border-radius: 10px;
+    padding: 26px 30px; max-width: 380px; text-align: center; z-index: 100;
+    box-shadow: 0 16px 40px rgba(0,0,0,.3);
+  }
+  .welcome-box .close { position: absolute; top: 12px; right: 14px; cursor: pointer; font-weight: 700; }
+  .welcome-box h2 { font-size: 21px; margin: 4px 0 16px; }
+  .welcome-box .choice { display: block; margin: 10px 0; font-weight: 700; cursor: pointer; }
+  .backdrop {
+    position: fixed; inset: 0; background: rgba(20,10,30,.35); z-index: 40;
+  }
+</style>
+</head>
+<body>
+
+<div class="disclaimer">DEMO — fictional academy, fictional data, built to illustrate a Power BI in-dashboard walkthrough pattern</div>
+
+<div class="wrap" id="wrap">
+
+  <div class="topbar">
+    <div class="home">⌂</div>
+    <h1>Gym Review</h1>
+    <div style="width:34px"></div>
+  </div>
+
+  <div class="brand-row">
+    <div class="logo-badge">◆</div>
+    <div class="brand-text">
+      <div class="name">Route 1 Trainer Academy</div>
+      <div class="sub">Trainer Records · Gym Review</div>
+    </div>
+    <div class="tabs">
+      <div class="tab">Gym Review Welcome Page</div>
+      <div class="tab active">Trainer Data</div>
+      <div class="tab">Trainer Visuals</div>
+      <div class="tab">Gym Data</div>
+    </div>
+  </div>
+
+  <div class="action-row">
+    <button class="faq-btn" id="stepAnchor6" onclick="alert('This would open the Frequent Q&A panel.')">? Frequent Q&A</button>
+    <button class="start-btn" onclick="startTour()">▶ Start Walkthrough</button>
+  </div>
+
+  <div class="desc">Display of trainer headcount, battles, and outcome data by type and route characteristics, for gym, region, or academy-wide comparisons.</div>
+
+  <div class="panel">
+
+    <div class="filter-grid" style="align-items:end;">
+      <div class="field">
+        <label>Metric Selection</label>
+        <select><option>Catch Rate</option><option>Trainer Count</option><option>Battles Completed</option><option>Badge Rate</option><option>Level</option></select>
+      </div>
+      <div class="field" id="stepAnchor1">
+        <label>&nbsp;</label>
+        <div class="fake-input" style="cursor:default;">Clear all slicers</div>
+      </div>
+      <div class="field" style="grid-column: span 2;">
+        <label>&nbsp;</label>
+        <div class="toggle-pair" id="stepAnchor2">
+          <button class="selected">All-Time Data</button>
+          <button>Region Data</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="filter-grid" id="stepAnchor3">
+      <div class="field"><label>Disaggregation Selection</label><select><option>Type</option></select></div>
+      <div class="field"><label>Disaggregation Filter</label><select><option>All</option></select></div>
+      <div class="field"></div>
+      <div class="field"></div>
+    </div>
+
+    <div class="section-band" id="stepAnchor4">
+      <span>Primary Table — Region, Gym, or Type View</span>
+      <span style="font-weight:400; font-size: 14px;">affects top matrix table only</span>
+    </div>
+    <div class="section-note">Filter this table by region, route, gym, or battle. Compare against the Academy-Wide Data below.</div>
+    <div class="filter-grid pink-row" style="margin:0; padding:10px 4px;">
+      <div class="field"><label>Region</label><select><option>All</option></select></div>
+      <div class="field"><label>Route</label><select><option>All</option></select></div>
+      <div class="field"><label>Gym</label><select><option>All</option></select></div>
+      <div class="field"><label>Battle ID</label><select><option>BLZ-101</option></select></div>
+    </div>
+    <table>
+      <thead><tr><th>Type</th><th>Gen 1</th><th>Gen 2</th><th>Gen 3</th><th>Gen 4</th><th>Gen 5</th><th>Gen 6</th></tr></thead>
+      <tbody>
+        <tr><td>Fire</td><td>88.0%</td><td>91.0%</td><td>79.0%</td><td>84.0%</td><td>90.0%</td><td>93.0%</td></tr>
+        <tr><td>Water</td><td>71.0%</td><td>66.0%</td><td>74.0%</td><td>69.0%</td><td>72.0%</td><td>75.0%</td></tr>
+        <tr><td>Grass</td><td>77.0%</td><td>80.0%</td><td>83.0%</td><td>81.0%</td><td>85.0%</td><td>88.0%</td></tr>
+        <tr><td>Electric</td><td>64.0%</td><td>68.0%</td><td>61.0%</td><td>70.0%</td><td>66.0%</td><td>72.0%</td></tr>
+        <tr><td>Psychic</td><td>90.0%</td><td>87.0%</td><td>92.0%</td><td>89.0%</td><td>94.0%</td><td>91.0%</td></tr>
+        <tr><td>Dragon</td><td>73.0%</td><td>76.0%</td><td>70.0%</td><td>78.0%</td><td>80.0%</td><td>82.0%</td></tr>
+      </tbody>
+      <tfoot><tr><td>Total</td><td>77.2%</td><td>78.0%</td><td>76.5%</td><td>78.5%</td><td>81.2%</td><td>83.5%</td></tr></tfoot>
+    </table>
+
+    <div class="section-band comparison-band" id="stepAnchor5">
+      <span>Comparison Table — Academy-Wide Data</span>
+      <span style="font-weight:400; font-size: 14px;">affects bottom matrix table only</span>
+    </div>
+    <div class="section-note comparison-note">Academy-wide data — use as a benchmark against your Primary Table selection above.</div>
+    <div class="filter-grid" style="margin:0; padding:10px 4px;">
+      <div class="field"><label>Region</label><select><option>All</option></select></div>
+      <div class="field"><label>Route</label><select><option>All</option></select></div>
+      <div class="field"><label>Gym</label><select><option>All</option></select></div>
+      <div class="field"><label>Battle ID</label><select><option>All</option></select></div>
+    </div>
+    <table>
+      <thead><tr><th>Type</th><th>Gen 1</th><th>Gen 2</th><th>Gen 3</th><th>Gen 4</th><th>Gen 5</th><th>Gen 6</th></tr></thead>
+      <tbody>
+        <tr><td>Fire</td><td>82.0%</td><td>83.0%</td><td>80.0%</td><td>84.0%</td><td>85.0%</td><td>87.0%</td></tr>
+        <tr><td>Water</td><td>75.0%</td><td>74.0%</td><td>76.0%</td><td>73.0%</td><td>77.0%</td><td>78.0%</td></tr>
+        <tr><td>Grass</td><td>79.0%</td><td>80.0%</td><td>81.0%</td><td>82.0%</td><td>83.0%</td><td>84.0%</td></tr>
+        <tr><td>Electric</td><td>68.0%</td><td>69.0%</td><td>67.0%</td><td>70.0%</td><td>71.0%</td><td>72.0%</td></tr>
+        <tr><td>Psychic</td><td>86.0%</td><td>87.0%</td><td>88.0%</td><td>87.0%</td><td>89.0%</td><td>90.0%</td></tr>
+        <tr><td>Dragon</td><td>74.0%</td><td>75.0%</td><td>76.0%</td><td>77.0%</td><td>78.0%</td><td>79.0%</td></tr>
+      </tbody>
+      <tfoot><tr><td>Total</td><td>77.3%</td><td>78.0%</td><td>78.0%</td><td>78.8%</td><td>80.5%</td><td>81.7%</td></tr></tfoot>
+    </table>
+
+    <div style="margin-top:20px; font-size: 15px; color:var(--muted);">Frequent Q&A panel opens from the button up top.</div>
+
+  </div>
+</div>
+
+<div class="backdrop" id="backdrop"></div>
+<div class="welcome-box" id="welcomeBox">
+  <span class="close" onclick="closeAll()">✕</span>
+  <h2>Ready to begin your journey, Trainer?<br><span style="font-weight:400;font-size: 18px;">Want a quick tour of the Academy dashboard before you dive in?</span></h2>
+  <span class="choice" onclick="startTour()">Yes, show me the walkthrough ›</span>
+  <span class="choice" onclick="closeAll()">No, proceed to dashboard ›</span>
+</div>
+
+<div class="overlay-box" id="stepBox" style="display:none;">
+  <span class="close" onclick="closeAll()">✕</span>
+  <h3 id="stepLabel">DASHBOARD WALKTHROUGH — STEP 1 of 6</h3>
+  <h4 id="stepTitle">Clear Your Trainer Card</h4>
+  <div id="stepBody"></div>
+  <div class="overlay-nav">
+    <span id="backBtn" onclick="prevStep()">‹ Back</span>
+    <span onclick="nextStep()" id="nextBtn">Next ›</span>
+  </div>
+</div>
+
+<script>
+const steps = [
+  { anchor: 'stepAnchor1', mode: 'right', title: 'Clear Your Trainer Card', body: 'Click "Clear all slicers" to wipe any filters left over from your last visit to the Academy.' },
+  { anchor: 'stepAnchor2', mode: 'right', title: 'All-Time or Region View', body: 'This toggle decides how your data is grouped. All-Time combines every region into one career total. Region Data lets you compare region by region.' },
+  { anchor: 'stepAnchor3', mode: 'right', title: 'Choose Your Stats', body: 'Pick what you want to measure \u2014 Catch Rate, Trainer Count, Battles Completed, Badge Rate, or Level \u2014 then choose how to break it down, like by Type. Both tables update together.' },
+  { anchor: 'stepAnchor4', mode: 'below', title: 'Your Trainer Log', body: 'This is your main exploration tool. Use the Region, Route, Gym, and Battle ID filters right above this table to drill into exactly the data you need \u2014 these filters affect only this table.' },
+  { anchor: 'stepAnchor5', mode: 'below', title: 'Academy Leaderboard', body: 'This table has its own Region, Route, Gym, and Battle ID filters, independent from the ones above. Set them differently to compare, say, one Gym against the whole Academy.' },
+  { anchor: 'stepAnchor6', mode: 'right', title: 'Need Backup?', body: "Can't find what you're looking for? Click Frequent Q&A up top for quick answers." }
+];
+
+let current = 0;
+let running = false;
+
+function positionBox() {
+  const s = steps[current];
+  const el = document.getElementById(s.anchor);
+  const box = document.getElementById('stepBox');
+  const wrapRect = document.getElementById('wrap').getBoundingClientRect();
+  const rect = el.getBoundingClientRect();
+
+  box.classList.remove('fold','tail','tail-right');
+
+  if (s.mode === 'right') {
+    let top = window.scrollY + rect.top + rect.height/2 - box.offsetHeight/2;
+    let left = window.scrollX + rect.right + 26;
+    let flipped = false;
+    if (left + box.offsetWidth > window.scrollX + wrapRect.right) {
+      left = window.scrollX + rect.left - box.offsetWidth - 26;
+      flipped = true;
+    }
+    box.classList.add(flipped ? 'tail-right' : 'tail');
+    top = Math.max(window.scrollY + 10, top);
+    box.style.top = top + 'px';
+    box.style.left = left + 'px';
+    const tailTop = (rect.top + rect.height/2) - top;
+    box.style.setProperty('--tail-top', tailTop + 'px');
+  } else {
+    box.classList.add('fold');
+    const top = window.scrollY + rect.bottom + 10;
+    let left = window.scrollX + rect.left;
+    const maxLeft = window.scrollX + wrapRect.right - box.offsetWidth;
+    if (left > maxLeft) left = maxLeft;
+    box.style.top = top + 'px';
+    box.style.left = left + 'px';
+  }
+  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function renderStep() {
+  const s = steps[current];
+  document.getElementById('stepLabel').textContent = `DASHBOARD WALKTHROUGH — STEP ${current + 1} of ${steps.length}`;
+  document.getElementById('stepTitle').textContent = s.title;
+  document.getElementById('stepBody').textContent = s.body;
+  document.getElementById('backBtn').style.visibility = current === 0 ? 'hidden' : 'visible';
+  document.getElementById('nextBtn').textContent = current === steps.length - 1 ? 'Done' : 'Next ›';
+  document.getElementById('stepBox').style.display = 'block';
+  setTimeout(positionBox, 30);
+}
+
+function startTour() {
+  document.getElementById('welcomeBox').style.display = 'none';
+  document.getElementById('backdrop').style.display = 'none';
+  current = 0;
+  running = true;
+  renderStep();
+}
+function nextStep() {
+  if (current < steps.length - 1) { current++; renderStep(); }
+  else closeAll();
+}
+function prevStep() {
+  if (current > 0) { current--; renderStep(); }
+}
+function closeAll() {
+  document.getElementById('welcomeBox').style.display = 'none';
+  document.getElementById('stepBox').style.display = 'none';
+  document.getElementById('backdrop').style.display = 'none';
+  running = false;
+}
+window.addEventListener('resize', () => { if (running) positionBox(); });
+</script>
+
+</body>
+</html>
