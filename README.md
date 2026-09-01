@@ -22,7 +22,7 @@ The other requirement that shaped this design: the walkthrough shouldn't just be
 
 ## Demo
 
-**[Live interactive preview](https://htmlpreview.github.io/?https://github.com/YOUR-USERNAME/YOUR-REPO-NAME/blob/main/walkthrough-demo.html)** — click through Next/Back the way it behaves in the real dashboard. (Replace `YOUR-USERNAME/YOUR-REPO-NAME` above with your actual GitHub path once uploaded.)
+**[Live interactive preview](https://htmlpreview.github.io/?https://github.com/hideasto/in-dashboard-walkthrough/blob/main/walkthrough-demo.html)** — click through Next/Back the way it behaves in the real dashboard.
 
 Screenshots of the pattern (mock institution, entirely fictional data — see `walkthrough-screenshots/`):
 
