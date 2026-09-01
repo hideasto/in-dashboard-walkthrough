@@ -89,7 +89,3 @@ For a small number of pages, the added complexity wasn't worth it. **Bookmark co
 - Bookmark count is not reusable across pages — each page's tour is built independently.
 - No built-in "seen it, don't show again" persistence across sessions (Power BI bookmarks don't carry user-level state between sessions on their own).
 - If a step's target control moves or is redesigned, its bookmark needs to be re-recorded.
-
-## License
-
-MIT — see `LICENSE`.
